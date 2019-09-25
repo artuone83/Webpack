@@ -1,16 +1,15 @@
 const path= require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
-  output: {
-    filename: './scripts/bundle.js',
-    path: path.resolve(__dirname, 'dist')
+  devServer: {
+    port: 8888
   },
   module: {
     rules: [
-
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
@@ -20,7 +19,6 @@ module.exports = {
             presets: ['@babel/preset-env', '@babel/preset-react']
           }
         }
-
       },
       {
         test: /\.(png|jpg|gif)$/,
@@ -33,9 +31,7 @@ module.exports = {
       {
         test: /\.scss$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-          },
+          MiniCssExtractPlugin.loader,
           "css-loader",
           "postcss-loader",
           "sass-loader"
@@ -47,11 +43,12 @@ module.exports = {
     extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx']
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html'
     }),
     new MiniCssExtractPlugin({
-      filename: "./styles/styles.css",
+      filename: "./styles/styles.[contentHash].css",
       chunkFilename: "[id].css"
     })
   ]
