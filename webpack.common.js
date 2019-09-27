@@ -1,6 +1,6 @@
-const path= require('path');
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
@@ -8,17 +8,21 @@ module.exports = {
   devServer: {
     port: 8888
   },
+  devtool: 'inline-source-map',
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
+        use: [{
+          loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env', '@babel/preset-react']
           }
-        }
+        },
+        {
+          loader: 'eslint-loader',
+        }]
       },
       {
         test: /\.(png|jpg|gif)$/,
@@ -32,9 +36,9 @@ module.exports = {
         test: /\.scss$/,
         use: [
           MiniCssExtractPlugin.loader,
-          "css-loader",
-          "postcss-loader",
-          "sass-loader"
+          'css-loader',
+          'postcss-loader',
+          'sass-loader'
         ]
       },
     ]
@@ -48,8 +52,8 @@ module.exports = {
       template: './src/index.html'
     }),
     new MiniCssExtractPlugin({
-      filename: "./styles/styles.[contentHash].css",
-      chunkFilename: "[id].css"
+      filename: './styles/styles.[contentHash].css',
+      chunkFilename: '[id].css'
     })
   ]
-}
+};
