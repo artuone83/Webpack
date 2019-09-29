@@ -1,5 +1,5 @@
 
-var rucksack = require('rucksack-css');
+const rucksack = require('rucksack-css');
 module.exports = {
   plugins: [
     //require('autoprefixer'),
@@ -7,4 +7,4 @@ module.exports = {
       autoprefixer: true
     }),
   ]
-}
+};
