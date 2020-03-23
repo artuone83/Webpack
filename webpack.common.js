@@ -1,4 +1,3 @@
-const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -6,7 +5,10 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
   entry: './src/index.js',
   devServer: {
-    port: 8888
+    port: 8888,
+    overlay: {
+      errors: true
+    }
   },
   devtool: 'inline-source-map',
   module: {
@@ -30,12 +32,16 @@ module.exports = {
         loader: 'file-loader',
         options: {
           outputPath: 'images',
-          name: '[name].[ext]'
+          name: '[contenthash].[ext]'
         }
       },
       {
+        test: /\.(mp4|MP4)$/,
+        use: 'file-loader?name=videos/[contenthash].[ext]',
+      },
+      {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader']
       },
       {
         test: /\.scss$/,
@@ -54,7 +60,8 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: './src/index.html'
+      template: './src/index.html',
+      // favicon: './src/favicon.ico'
     }),
     new MiniCssExtractPlugin({
       filename: './styles/styles.[contentHash].css',
